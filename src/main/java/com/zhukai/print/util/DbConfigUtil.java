@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * ¸´ÖÆsqliteÎÄ¼ş, µ«Á¬½ÓÊ±»á³öÏÖ The database disk image is malformed , Ó¦¸ÃÊÇ¸´ÖÆÊ±Ëğ»µÁËÎÄ¼ş
- * ËùÒÔ°Ñline:36ĞĞ»º´æµ÷´óµ½1024 * 1024, Ò»´ÎĞÔ¸´ÖÆÔİÊ±½â¾öÕâ¸öÎÊÌâ
+ * å¤åˆ¶sqliteæ–‡ä»¶, ä½†è¿æ¥æ—¶ä¼šå‡ºç° The database disk image is malformed , åº”è¯¥æ˜¯å¤åˆ¶æ—¶æŸåäº†æ–‡ä»¶
+ * æ‰€ä»¥æŠŠline:36è¡Œç¼“å­˜è°ƒå¤§åˆ°1024 * 1024, ä¸€æ¬¡æ€§å¤åˆ¶æš‚æ—¶è§£å†³è¿™ä¸ªé—®é¢˜
  *
  * @author zhukai
  * @date 2019/2/1

@@ -320,8 +320,8 @@ public class JasperViewer extends javax.swing.JFrame
         pnlMain = new javax.swing.JPanel();
 
         // setTitle("JasperViewer");
-        // 修改成为中文标题 By zhukai
-        setTitle("打印预览");
+        // 淇敼鎴愪负涓枃鏍囬 By zhukai
+        setTitle("鎵撳嵃棰勮");
         setIconImage(new javax.swing.ImageIcon(getClass().getResource("/net/sf/jasperreports/view/images/jricon.GIF")).getImage());
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {

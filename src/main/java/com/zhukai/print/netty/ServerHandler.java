@@ -23,8 +23,8 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimplePrintServiceExporterConfiguration;
 import net.sf.jasperreports.view.JasperViewer;
-import org.apache.commons.lang.BooleanUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.print.DocFlavor;
 import javax.print.PrintService;
@@ -43,7 +43,7 @@ import java.util.*;
 import static io.netty.handler.codec.http.HttpUtil.is100ContinueExpected;
 
 /**
- * ÓÃÓÚ´¦ÀíhttpÇëÇó
+ * ç”¨äºå¤„ç†httpè¯·æ±‚
  *
  * @author zhukai
  * @date 2019/1/28
@@ -52,7 +52,7 @@ import static io.netty.handler.codec.http.HttpUtil.is100ContinueExpected;
 public class ServerHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 
     /**
-     * ºöÂÔµÄurlÇëÇó
+     * å¿½ç•¥çš„urlè¯·æ±‚
      */
     public static Set<String> ignoreUrlSet = new HashSet<>();
 
@@ -63,9 +63,9 @@ public class ServerHandler extends SimpleChannelInboundHandler<FullHttpRequest> 
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest req) throws Exception {
-        // »ñÈ¡ÇëÇóµÄuri
+        // è·å–è¯·æ±‚çš„uri
         String uri = req.uri();
-        // ¹ıÂËÇëÇó
+        // è¿‡æ»¤è¯·æ±‚
         if (ignoreUrlSet.contains(uri)) {
             return;
         }
@@ -77,24 +77,24 @@ public class ServerHandler extends SimpleChannelInboundHandler<FullHttpRequest> 
         }
         ResMap resMap = null;
         if (HttpMethod.GET.equals(req.method())) {
-            resMap = ResMap.error("²»Ö§³ÖGETÇëÇó!");
+            resMap = ResMap.error("ä¸æ”¯æŒGETè¯·æ±‚!");
         } else if (HttpMethod.POST.equals(req.method())) {
             Map<String, String> parameterMap = getParameterMap(req);
             resMap = this.print(parameterMap);
         }
 
-        // ´´½¨httpÏìÓ¦
+        // åˆ›å»ºhttpå“åº”
         FullHttpResponse response = new DefaultFullHttpResponse(
                 HttpVersion.HTTP_1_1,
                 HttpResponseStatus.OK,
                 Unpooled.copiedBuffer(JSON.toJSONString(resMap), CharsetUtil.UTF_8));
-        // ÉèÖÃÍ·ĞÅÏ¢, ÔÊĞí¿çÓò·ÃÎÊ
+        // è®¾ç½®å¤´ä¿¡æ¯, å…è®¸è·¨åŸŸè®¿é—®
         response.headers().set(HttpHeaderNames.CONTENT_TYPE, "application/json; charset=UTF-8");
         response.headers().set(HttpHeaderNames.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
         response.headers().set(HttpHeaderNames.ACCESS_CONTROL_ALLOW_HEADERS, "Origin, X-Requested-With, Authorization, Content-Type, Accept");
         response.headers().set(HttpHeaderNames.ACCESS_CONTROL_ALLOW_METHODS, "GET, POST");
         response.headers().set(HttpHeaderNames.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true");
-        // ½«html writeµ½¿Í»§¶Ë
+        // å°†html writeåˆ°å®¢æˆ·ç«¯
         ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
     }
 
@@ -121,7 +121,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<FullHttpRequest> 
         try {
             String url = parameterMap.get("url");
             if (StringUtils.isEmpty(url)) {
-                String msg = "´«Èë²ÎÊı²»ÕıÈ·! urlÎª¿Õ!";
+                String msg = "ä¼ å…¥å‚æ•°ä¸æ­£ç¡®! urlä¸ºç©º!";
                 log.error(msg);
                 Platform.runLater(() -> AlertUtil.error(msg));
                 return ResMap.error(msg);
@@ -131,7 +131,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<FullHttpRequest> 
                 printerType = Contants.DEFAULT_PRINTER;
             }
             String docType = parameterMap.get("docType");
-            if (StringUtils.isEmpty(printerType)) {
+            if (StringUtils.isEmpty(docType)) {
                 docType = StringUtils.EMPTY;
             }
             RequestModel req = new RequestModel();
@@ -154,17 +154,17 @@ public class ServerHandler extends SimpleChannelInboundHandler<FullHttpRequest> 
         Map<String, String> configMap = CommonDao.getSysConfig();
         String printerName = configMap.get(printerType);
         if (StringUtils.isEmpty(printerName)) {
-            String msg = "Ã»ÓĞÕÒµ½Ä¬ÈÏ´òÓ¡»úÅäÖÃ, ´òÓ¡²ÎÊı:" + printerType;
+            String msg = "æ²¡æœ‰æ‰¾åˆ°é»˜è®¤æ‰“å°æœºé…ç½®, æ‰“å°å‚æ•°:" + printerType;
             log.error(msg);
             Platform.runLater(() -> AlertUtil.error(msg));
-            return ResMap.error("´«Èë²ÎÊı²»ÕıÈ·!");
+            return ResMap.error("ä¼ å…¥å‚æ•°ä¸æ­£ç¡®!");
         }
-        // ²éÕÒ´òÓ¡»ú
+        // æŸ¥æ‰¾æ‰“å°æœº
         HashAttributeSet hs = new HashAttributeSet();
         hs.add(new PrinterName(printerName, null));
         PrintService[] printServices = PrintServiceLookup.lookupPrintServices(DocFlavor.SERVICE_FORMATTED.PAGEABLE, hs);
         if (printServices == null || printServices.length == 0) {
-            String msg = "ÎŞ·¨ÕÒµ½Ãû³ÆÎª[" + printerName + "]µÄ´òÓ¡»ú!";
+            String msg = "æ— æ³•æ‰¾åˆ°åç§°ä¸º[" + printerName + "]çš„æ‰“å°æœº!";
             log.error(msg);
             Platform.runLater(() -> AlertUtil.error(msg));
             return ResMap.error(msg);
@@ -173,7 +173,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<FullHttpRequest> 
         boolean showPage = BooleanUtils.toBoolean(configMap.get(Contants.SHOW_PAGE_DIALOG));
         boolean showPrint = BooleanUtils.toBoolean(configMap.get(Contants.SHOW_PRINT_DIALOG));
         if (showPreview) {
-            // Ô¤ÀÀ
+            // é¢„è§ˆ
             JasperPrint jasperPrint = (JasperPrint) JRLoader.loadObject(new URL(url));
             PropertyResourceBundle viewer = (PropertyResourceBundle) ResourceBundle.getBundle("bundle/viewer", Locale.CHINA);
             JasperViewer.viewReport(DefaultJasperReportsContext.getInstance(), jasperPrint, false, Locale.CHINA, viewer);
@@ -181,20 +181,20 @@ public class ServerHandler extends SimpleChannelInboundHandler<FullHttpRequest> 
             JRPrintServiceExporter exporter = new JRPrintServiceExporter();
             SimplePrintServiceExporterConfiguration cfg = new SimplePrintServiceExporterConfiguration();
             cfg.setPrintService(printServices[0]);
-            cfg.setDisplayPageDialog(showPage);    // Ò³ÃæÉèÖÃ
-            cfg.setDisplayPrintDialog(showPrint);   // ´òÓ¡»úÉèÖÃ
+            cfg.setDisplayPageDialog(showPage);    // é¡µé¢è®¾ç½®
+            cfg.setDisplayPrintDialog(showPrint);   // æ‰“å°æœºè®¾ç½®
 
             PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
-            printRequestAttributeSet.add(new Copies(1));    // ´òÓ¡ÕÅÊı
+            printRequestAttributeSet.add(new Copies(1));    // æ‰“å°å¼ æ•°
             cfg.setPrintRequestAttributeSet(printRequestAttributeSet);
 
             exporter.setConfiguration(cfg);
             exporter.setExporterInput(new SimpleExporterInput(new URL(url)));
             exporter.exportReport();
         }
-        // ±£´æÈÕÖ¾
+        // ä¿å­˜æ—¥å¿—
         CommonDao.insertPrintLog(req);
-        log.info("´òÓ¡³É¹¦, µ¥¾İÀàĞÍ:{}, ´òÓ¡»ú:{},´òÓ¡ÀàĞÍ:{}", docType, printerName, printerType);
+        log.info("æ‰“å°æˆåŠŸ, å•æ®ç±»å‹:{}, æ‰“å°æœº:{},æ‰“å°ç±»å‹:{}", docType, printerName, printerType);
         return ResMap.success();
     }
 

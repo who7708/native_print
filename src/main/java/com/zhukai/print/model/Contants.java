@@ -1,28 +1,28 @@
 package com.zhukai.print.model;
 
 /**
- * ³£Á¿Àà
+ * å¸¸é‡ç±»
  *
  * @author zhukai
  * @date 2019/1/30
  */
 public class Contants {
 
-    /** Ä¬ÈÏ´òÓ¡»ú */
+    /** é»˜è®¤æ‰“å°æœº */
     public static final String DEFAULT_PRINTER = "default_printer";
-    /** ±êÇ©´òÓ¡»ú */
+    /** æ ‡ç­¾æ‰“å°æœº */
     public static final String LABEL_PRINTER = "label_printer";
-    /** Ãæµ¥´òÓ¡»ú */
+    /** é¢å•æ‰“å°æœº */
     public static final String LOGISTICS_PRINTER = "logistics_printer";
-    /** ×°ÏäÇåµ¥´òÓ¡»ú */
+    /** è£…ç®±æ¸…å•æ‰“å°æœº */
     public static final String PACK_PRINTER = "pack_printer";
-    /** A4´òÓ¡»ú */
+    /** A4æ‰“å°æœº */
     public static final String A4_PRINTER = "a4_printer";
-    /** ÊÇ·ñµ¯³öÒ³ÃæÉèÖÃ */
+    /** æ˜¯å¦å¼¹å‡ºé¡µé¢è®¾ç½® */
     public static final String SHOW_PAGE_DIALOG = "show_page_dialog";
-    /** ÊÇ·ñµ¯³ö´òÓ¡»úÉèÖÃ */
+    /** æ˜¯å¦å¼¹å‡ºæ‰“å°æœºè®¾ç½® */
     public static final String SHOW_PRINT_DIALOG = "show_print_dialog";
-    /** ÊÇ·ñÔ¤ÀÀ´òÓ¡½á¹û */
+    /** æ˜¯å¦é¢„è§ˆæ‰“å°ç»“æœ */
     public static final String SHOW_PERVIEW_DIALOG = "show_perview_dialog";
 
 }

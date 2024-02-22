@@ -27,7 +27,7 @@ public class SqliteTest {
     }
 
     public void sample() {
-        /*Alert confirmation = AlertUtil.confirmation("确认要关闭吗?");
+        /*Alert confirmation = AlertUtil.confirmation("纭瑕佸叧闂悧?");
         Optional<ButtonType> result = confirmation.showAndWait();
         if (result.get() == ButtonType.OK) {
             System.exit(0);

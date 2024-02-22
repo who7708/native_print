@@ -16,17 +16,17 @@ import java.io.Serializable;
 public class RequestModel implements Serializable {
 
     /**
-     * ×ª·¢µÄurl
+     * è½¬å‘çš„url
      */
     private String url;
 
     /**
-     * ´òÓ¡»úÀàĞÍ
+     * æ‰“å°æœºç±»å‹
      */
     private String printerType;
 
     /**
-     * µ¥¾İÀàĞÍ
+     * å•æ®ç±»å‹
      */
     private String docType;
 }

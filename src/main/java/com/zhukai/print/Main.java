@@ -27,44 +27,46 @@ import java.net.URL;
 @Slf4j
 public class Main extends Application {
 
-    private int httpPort = 8086;
+    private final int httpPort = 8086;
 
-    private String title = "´òÓ¡¸¨Öú³ÌÐò";
+    private final String title = "æ‰“å°è¾…åŠ©ç¨‹åº";
 
     private TrayIcon trayIcon;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // ´´½¨DB
+        // åˆ›å»ºDB
         DbConfigUtil.createEmptyFiles();
-        // ×îÐ¡»¯ÍÐÅÌ
+        // æœ€å°åŒ–æ‰˜ç›˜
         this.enableTray(primaryStage);
-
         URL resource = Thread.currentThread().getContextClassLoader().getResource("fxml/main.fxml");
+        assert resource != null;
         Parent root = FXMLLoader.load(resource);
+        // FXMLLoader fxmlLoader = new FXMLLoader(resource);
+        // Parent root = fxmlLoader.load();
         primaryStage.setScene(new Scene(root));
         primaryStage.setTitle(title);
-        // ²»ÄÜ¸Ä±ä´°Ìå´óÐ¡
+        // ä¸èƒ½æ”¹å˜çª—ä½“å¤§å°
         primaryStage.setResizable(false);
-        // ÉèÖÃÍ¼±êG
+        // è®¾ç½®å›¾æ ‡G
         primaryStage.getIcons().add(new Image("/icon/print.png"));
-        // ¹Ø±ÕÊ±¼àÌýÊÂ¼þ
+        // å…³é—­æ—¶ç›‘å¬äº‹ä»¶
         primaryStage.setOnCloseRequest(event -> {
             event.consume();
-            Platform.runLater(() -> primaryStage.hide());
+            Platform.runLater(primaryStage::hide);
         });
         primaryStage.show();
 
-        // ¿ªÆôÒ»¸öHttp·þÎñ
+        // å¼€å¯ä¸€ä¸ªHttpæœåŠ¡
         this.startHttpServer();
     }
 
     private void startHttpServer() {
         new Thread(() -> {
             System.setProperty("io.netty.noUnsafe", "true");
-            // Ìí¼ÓºöÂÔµØÖ·
+            // æ·»åŠ å¿½ç•¥åœ°å€
             ServerHandler.addIgnoreUrl("/favicon.ico");
-            // ¿ªÆô·þÎñ
+            // å¼€å¯æœåŠ¡
             new HttpServer().bind(httpPort);
         }).start();
     }
@@ -73,10 +75,10 @@ public class Main extends Application {
         try {
             launch(args);
         } catch (Exception e) {
-            // ÈçÆô¶¯´íÎó, µ¯¿òÌáÊ¾´íÎó, ²¢¼ÇÂ¼´íÎóÈÕÖ¾µ½ÎÄ¼þ·½±ãÅÅ²éÎÊÌâ
+            // å¦‚å¯åŠ¨é”™è¯¯, å¼¹æ¡†æç¤ºé”™è¯¯, å¹¶è®°å½•é”™è¯¯æ—¥å¿—åˆ°æ–‡ä»¶æ–¹ä¾¿æŽ’æŸ¥é—®é¢˜
             JOptionPane.showMessageDialog(null, e.getMessage());
             try {
-                File file = new File("E:/print_start.log");
+                File file = new File("print-log/print-start.log");
                 if (!file.exists()) {
                     boolean flag = file.createNewFile();
                 }
@@ -92,48 +94,52 @@ public class Main extends Application {
     }
 
 
-    // ÓÒÏÂ½Ç, ×îÐ¡»¯
+    // å³ä¸‹è§’, æœ€å°åŒ–
     private void enableTray(final Stage stage) {
         PopupMenu popupMenu = new PopupMenu();
-        java.awt.MenuItem openItem = new java.awt.MenuItem("ÏÔÊ¾");
-        java.awt.MenuItem hideItem = new java.awt.MenuItem("×îÐ¡»¯");
-        java.awt.MenuItem quitItem = new java.awt.MenuItem("ÍË³ö");
+        java.awt.MenuItem openItem = new java.awt.MenuItem("æ˜¾ç¤º");
+        java.awt.MenuItem hideItem = new java.awt.MenuItem("æœ€å°åŒ–");
+        java.awt.MenuItem quitItem = new java.awt.MenuItem("é€€å‡º");
 
-        Platform.setImplicitExit(false); // ¶à´ÎÊ¹ÓÃÏÔÊ¾ºÍÒþ²ØÉèÖÃfalse
+        Platform.setImplicitExit(false); // å¤šæ¬¡ä½¿ç”¨æ˜¾ç¤ºå’Œéšè—è®¾ç½®false
 
         ActionListener acl = e -> {
             java.awt.MenuItem item = (java.awt.MenuItem) e.getSource();
-            if (item.getLabel().equals("ÍË³ö")) {
+            if (item.getLabel().equals("é€€å‡º")) {
                 SystemTray.getSystemTray().remove(trayIcon);
                 Platform.exit();
                 System.exit(0);
                 return;
             }
-            if (item.getLabel().equals("ÏÔÊ¾")) {
-                Platform.runLater(() -> stage.show());
+            if (item.getLabel().equals("æ˜¾ç¤º")) {
+                Platform.runLater(stage::show);
             }
-            if (item.getLabel().equals("×îÐ¡»¯")) {
-                Platform.runLater(() -> stage.hide());
+            if (item.getLabel().equals("æœ€å°åŒ–")) {
+                Platform.runLater(stage::hide);
             }
         };
 
-        // Ë«»÷ÊÂ¼þ·½·¨
+        // åŒå‡»äº‹ä»¶æ–¹æ³•
         MouseListener sj = new MouseListener() {
 
-            public void mouseReleased(MouseEvent e) {}
+            public void mouseReleased(MouseEvent e) {
+            }
 
-            public void mousePressed(MouseEvent e) {}
+            public void mousePressed(MouseEvent e) {
+            }
 
-            public void mouseExited(MouseEvent e) {}
+            public void mouseExited(MouseEvent e) {
+            }
 
-            public void mouseEntered(MouseEvent e) {}
+            public void mouseEntered(MouseEvent e) {
+            }
 
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
                     if (stage.isShowing()) {
-                        Platform.runLater(() -> stage.hide());
+                        Platform.runLater(stage::hide);
                     } else {
-                        Platform.runLater(() -> stage.show());
+                        Platform.runLater(stage::show);
                     }
                 }
             }

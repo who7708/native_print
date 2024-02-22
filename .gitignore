@@ -1,0 +1,13 @@
+# Default ignored files
+.idea
+target
+
+*.log
+
+.DS_Store
+
+# 忽略日志
+print-log
+
+# 忽略db文件
+db

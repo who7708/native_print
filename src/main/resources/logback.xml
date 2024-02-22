@@ -6,7 +6,7 @@
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>[%d{MM-dd HH:mm:ss}] %p : %m%n</pattern>
-            <charset>GBK</charset>
+            <charset>UTF8</charset>
         </encoder>
     </appender>
 
@@ -19,7 +19,7 @@
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 活动文件的名字会根据fileNamePattern的值，每隔一段时间改变一次 -->
             <!-- 文件名：log/demo.2017-12-05.0.log -->
-            <fileNamePattern>D:/print-log/%d.%i.log</fileNamePattern>
+            <fileNamePattern>print-log/%d.%i.log</fileNamePattern>
             <!-- 每产生一个日志文件，该日志文件的保存期限为30天 -->
             <maxHistory>30</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
@@ -33,7 +33,7 @@
                 [%d{MM-dd HH:mm:ss}] %p (%logger{0}:%line\)- %m%n
             </pattern>
             <!-- 记录日志的编码:此处设置字符集 - -->
-            <charset>GBK</charset>
+            <charset>UTF8</charset>
         </encoder>
     </appender>
 

@@ -10,7 +10,7 @@ import io.netty.handler.codec.http.HttpServerCodec;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * netty´î½¨µÄ¼òÒ×http·şÎñ
+ * nettyæ­å»ºçš„ç®€æ˜“httpæœåŠ¡
  *
  * @author zhukai
  * @date 2019/1/25
@@ -20,38 +20,38 @@ public class HttpServer {
 
     public void bind(int port) {
 
-        EventLoopGroup bossGroup = new NioEventLoopGroup();     // bossGroup¾ÍÊÇparentGroup£¬ÊÇ¸ºÔğ´¦ÀíTCP/IPÁ¬½ÓµÄ
-        EventLoopGroup workerGroup = new NioEventLoopGroup();   // workerGroup¾ÍÊÇchildGroup,ÊÇ¸ºÔğ´¦ÀíChannel(Í¨µÀ)µÄI/OÊÂ¼ş
+        EventLoopGroup bossGroup = new NioEventLoopGroup();     // bossGroupå°±æ˜¯parentGroupï¼Œæ˜¯è´Ÿè´£å¤„ç†TCP/IPè¿æ¥çš„
+        EventLoopGroup workerGroup = new NioEventLoopGroup();   // workerGroupå°±æ˜¯childGroup,æ˜¯è´Ÿè´£å¤„ç†Channel(é€šé“)çš„I/Oäº‹ä»¶
 
         try {
             ServerBootstrap sb = new ServerBootstrap();
             sb.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
-                    .option(ChannelOption.SO_BACKLOG, 16)  // ³õÊ¼»¯·şÎñ¶Ë¿ÉÁ¬½Ó¶ÓÁĞ,Ö¸¶¨ÁË¶ÓÁĞµÄ´óĞ¡16
-                    .childOption(ChannelOption.SO_KEEPALIVE, true)      // ±£³Ö³¤Á¬½Ó
-                    .childHandler(new ChannelInitializer<SocketChannel>() {   // °ó¶¨¿Í»§¶ËÁ¬½ÓÊ±ºò´¥·¢²Ù×÷
+                    .option(ChannelOption.SO_BACKLOG, 16)  // åˆå§‹åŒ–æœåŠ¡ç«¯å¯è¿æ¥é˜Ÿåˆ—,æŒ‡å®šäº†é˜Ÿåˆ—çš„å¤§å°16
+                    .childOption(ChannelOption.SO_KEEPALIVE, true)      // ä¿æŒé•¿è¿æ¥
+                    .childHandler(new ChannelInitializer<SocketChannel>() {   // ç»‘å®šå®¢æˆ·ç«¯è¿æ¥æ—¶å€™è§¦å‘æ“ä½œ
                         @Override
                         protected void initChannel(SocketChannel sh) throws Exception {
                             ChannelPipeline pipeline = sh.pipeline();
-                            pipeline.addLast(new HttpServerCodec());    // http ±à½âÂë
-                            pipeline.addLast("httpAggregator", new HttpObjectAggregator(512 * 1024)); // http ÏûÏ¢¾ÛºÏÆ÷                                                                     512*1024Îª½ÓÊÕµÄ×î´ócontentlength
-                            pipeline.addLast(new ServerHandler());      // ÇëÇó´¦ÀíÆ÷
+                            pipeline.addLast(new HttpServerCodec());    // http ç¼–è§£ç 
+                            pipeline.addLast("httpAggregator", new HttpObjectAggregator(512 * 1024)); // http æ¶ˆæ¯èšåˆå™¨                                                                     512*1024ä¸ºæ¥æ”¶çš„æœ€å¤§contentlength
+                            pipeline.addLast(new ServerHandler());      // è¯·æ±‚å¤„ç†å™¨
                         }
                     });
-            // °ó¶¨¼àÌı¶Ë¿Ú£¬µ÷ÓÃsyncÍ¬²½×èÈû·½·¨µÈ´ı°ó¶¨²Ù×÷Íê
+            // ç»‘å®šç›‘å¬ç«¯å£ï¼Œè°ƒç”¨syncåŒæ­¥é˜»å¡æ–¹æ³•ç­‰å¾…ç»‘å®šæ“ä½œå®Œ
             ChannelFuture future = sb.bind(port).sync();
 
             if (future.isSuccess()) {
-                // ³É¹¦°ó¶¨µ½¶Ë¿ÚÖ®ºó,¸øchannelÔö¼ÓÒ»¸ö¹ÜµÀ¹Ø±ÕµÄ¼àÌıÆ÷²¢Í¬²½×èÈû,Ö±µ½channel¹Ø±Õ,Ïß³Ì²Å»áÍùÏÂÖ´ĞĞ,½áÊø½ø³Ì¡£
-                log.info("·şÎñ¶ËÆô¶¯³É¹¦! {}", "http://localhost:" + port);
+                // æˆåŠŸç»‘å®šåˆ°ç«¯å£ä¹‹å,ç»™channelå¢åŠ ä¸€ä¸ªç®¡é“å…³é—­çš„ç›‘å¬å™¨å¹¶åŒæ­¥é˜»å¡,ç›´åˆ°channelå…³é—­,çº¿ç¨‹æ‰ä¼šå¾€ä¸‹æ‰§è¡Œ,ç»“æŸè¿›ç¨‹ã€‚
+                log.info("æœåŠ¡ç«¯å¯åŠ¨æˆåŠŸ! {}", "http://localhost:" + port);
                 future.channel().closeFuture().sync();
             } else {
-                log.error("·şÎñ¶ËÆô¶¯Ê§°Ü", future.cause());
+                log.error("æœåŠ¡ç«¯å¯åŠ¨å¤±è´¥", future.cause());
             }
         } catch (Exception e) {
             log.error("", e);
         } finally {
-            // ¹Ø±ÕÏß³Ì×é
+            // å…³é—­çº¿ç¨‹ç»„
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
         }

@@ -14,7 +14,7 @@ public class ResMap extends HashMap<String, Object> {
     }
 
     public static ResMap error() {
-        return error("ÏµÍ³Òì³££¬ÇëÁªÏµ¹ÜÀíÔ±");
+        return error("ç³»ç»Ÿå¼‚å¸¸ï¼Œè¯·è”ç³»ç®¡ç†å‘˜");
     }
 
     public static ResMap error(String msg) {

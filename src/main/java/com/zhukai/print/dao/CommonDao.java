@@ -14,7 +14,7 @@ import java.util.Map;
 public class CommonDao {
 
     /**
-     * »ñÈ¡È«²¿ÅäÖÃ
+     * è·å–å…¨éƒ¨é…ç½®
      */
     public static Map<String, String> getSysConfig() {
         String sql = "select sys_code, sys_value from sys_config";
@@ -32,7 +32,7 @@ public class CommonDao {
     }
 
     /**
-     * »ñÈ¡È«²¿ÅäÖÃ
+     * è·å–å…¨éƒ¨é…ç½®
      */
     public static RequestModel getLastPrintLog() {
         String sql = "select url, print_type, doc_type, create_time from print_log order by create_time desc limit 1";
@@ -54,7 +54,7 @@ public class CommonDao {
     }
 
     /**
-     * ĞŞ¸ÄÅäÖÃ, É¾³ıÖ®ºóÔÚÔö¼Ó
+     * ä¿®æ”¹é…ç½®, åˆ é™¤ä¹‹ååœ¨å¢åŠ 
      */
     public static void updateSysConfig(String sysCode, String sysValue) {
         List<String> sqlList = new ArrayList<>();
@@ -68,7 +68,7 @@ public class CommonDao {
     }
 
     /**
-     * ±£Áô10ÌìµÄÈÕÖ¾¼ÇÂ¼
+     * ä¿ç•™10å¤©çš„æ—¥å¿—è®°å½•
      */
     public static void insertPrintLog(RequestModel req) {
         List<String> sqlList = new ArrayList<>();

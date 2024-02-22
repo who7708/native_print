@@ -6,7 +6,7 @@ import javafx.beans.value.ObservableValue;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * ChoiceBox¼àÌı
+ * ChoiceBoxç›‘å¬
  *
  * @author zhukai
  * @date 2019/1/30
@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MyChangeListener<T> implements ChangeListener<T> {
 
-    private String sysCode;
+    private final String sysCode;
 
     public MyChangeListener(String sysCode) {
         this.sysCode = sysCode;

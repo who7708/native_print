@@ -16,12 +16,12 @@ import java.io.Serializable;
 public class PrinterDTO implements Serializable {
 
     /**
-     * ĞòºÅ
+     * åºå·
      */
     private Integer seqNum;
 
     /**
-     * ´òÓ¡»úÃû³Æ
+     * æ‰“å°æœºåç§°
      */
     private String printerName;
 }

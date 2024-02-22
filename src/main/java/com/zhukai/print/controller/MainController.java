@@ -15,15 +15,18 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.BooleanUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.print.PrintService;
 import java.awt.print.PrinterJob;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -57,16 +60,16 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        // »ñÈ¡´òÓ¡»úÁĞ±í
+        // è·å–æ‰“å°æœºåˆ—è¡¨
         PrintService[] printers = PrinterJob.lookupPrintServices();
 
-        // °ó¶¨´òÓ¡»úÁĞ±íÊı¾İ
-        seqNumColumn.setCellValueFactory(new PropertyValueFactory<>("seqNum")); // Ó³Éä
-        printNameColumn.setCellValueFactory(new PropertyValueFactory<>("printerName")); // Ó³Éä
+        // ç»‘å®šæ‰“å°æœºåˆ—è¡¨æ•°æ®
+        seqNumColumn.setCellValueFactory(new PropertyValueFactory<>("seqNum")); // æ˜ å°„
+        printNameColumn.setCellValueFactory(new PropertyValueFactory<>("printerName")); // æ˜ å°„
         List<PrinterDTO> printerDTOList = this.getPrinterDTOList(printers);
         printerTableView.setItems(FXCollections.observableArrayList(printerDTOList));
 
-        // °ó¶¨´òÓ¡»úÏÂÀ­¿òÊı¾İ
+        // ç»‘å®šæ‰“å°æœºä¸‹æ‹‰æ¡†æ•°æ®
         List<String> printStrList = printerDTOList.stream().map(PrinterDTO::getPrinterName).collect(Collectors.toList());
         defaultPrinterChoiceBox.setItems(FXCollections.observableArrayList(printStrList));
         labelPrinterChoiceBox.setItems(FXCollections.observableArrayList(printStrList));
@@ -74,35 +77,35 @@ public class MainController implements Initializable {
         packPrinterChoiceBox.setItems(FXCollections.observableArrayList(printStrList));
         a4PrinterChoiceBox.setItems(FXCollections.observableArrayList(printStrList));
 
-        // ³õÊ¼»¯ÏÂÀ­¿òÑ¡ÖĞÊı¾İ
+        // åˆå§‹åŒ–ä¸‹æ‹‰æ¡†é€‰ä¸­æ•°æ®
         Map<String, String> map = CommonDao.getSysConfig();
         this.initChoiceBoxValue(map, printStrList);
 
-        // ³õÊ¼»¯CheckBoxÊı¾İ
+        // åˆå§‹åŒ–CheckBoxæ•°æ®
         showPageDialogCheckBox.setSelected(BooleanUtils.toBoolean(map.get(Contants.SHOW_PAGE_DIALOG)));
         showPrintDialogCheckBox.setSelected(BooleanUtils.toBoolean(map.get(Contants.SHOW_PRINT_DIALOG)));
         showPerviewDialogCheckBox.setSelected(BooleanUtils.toBoolean(map.get(Contants.SHOW_PERVIEW_DIALOG)));
 
-        // °ó¶¨ÏÂÀ­¿òÖµ±ä¸üµÄ¼àÌı
+        // ç»‘å®šä¸‹æ‹‰æ¡†å€¼å˜æ›´çš„ç›‘å¬
         defaultPrinterChoiceBox.getSelectionModel().selectedItemProperty().addListener(new MyChangeListener<>(Contants.DEFAULT_PRINTER));
         labelPrinterChoiceBox.getSelectionModel().selectedItemProperty().addListener(new MyChangeListener<>(Contants.LABEL_PRINTER));
         logisticsPrinterChoiceBox.getSelectionModel().selectedItemProperty().addListener(new MyChangeListener<>(Contants.LOGISTICS_PRINTER));
         packPrinterChoiceBox.getSelectionModel().selectedItemProperty().addListener(new MyChangeListener<>(Contants.PACK_PRINTER));
         a4PrinterChoiceBox.getSelectionModel().selectedItemProperty().addListener(new MyChangeListener<>(Contants.A4_PRINTER));
 
-        // °ó¶¨CheckBox±ä¸üµÄ¼àÌı
+        // ç»‘å®šCheckBoxå˜æ›´çš„ç›‘å¬
         showPageDialogCheckBox.selectedProperty().addListener(new MyChangeListener<>(Contants.SHOW_PAGE_DIALOG));
         showPrintDialogCheckBox.selectedProperty().addListener(new MyChangeListener<>(Contants.SHOW_PRINT_DIALOG));
         showPerviewDialogCheckBox.selectedProperty().addListener(new MyChangeListener<>(Contants.SHOW_PERVIEW_DIALOG));
 
-        // ÖØ¶¨ÏòSystem.outÊä³öµ½logArea¿Ø¼şÖĞ
+        // é‡å®šå‘System.outè¾“å‡ºåˆ°logAreaæ§ä»¶ä¸­
         this.setSystemOut();
-        log.info("»ñÈ¡´òÓ¡»ú³É¹¦!");
-        log.info("³õÊ¼»¯°ó¶¨Êı¾İ³É¹¦!");
+        log.info("è·å–æ‰“å°æœºæˆåŠŸ!");
+        log.info("åˆå§‹åŒ–ç»‘å®šæ•°æ®æˆåŠŸ!");
     }
 
     /**
-     * ÖØ¶¨ÏòSystem.outÊä³öµ½logArea¿Ø¼şÖĞ
+     * é‡å®šå‘System.outè¾“å‡ºåˆ°logAreaæ§ä»¶ä¸­
      */
     private void setSystemOut() {
         PrintStream printStream = new PrintStream(new OutputStream() {
@@ -147,14 +150,14 @@ public class MainController implements Initializable {
     }
 
     /**
-     * ÖØĞÂ¼ÓÔØ´òÓ¡»úÁĞ±í
+     * é‡æ–°åŠ è½½æ‰“å°æœºåˆ—è¡¨
      */
     public void reloadPrint(ActionEvent event) {
         PrintService[] printers = PrinterJob.lookupPrintServices();
         List<PrinterDTO> printerDTOList = this.getPrinterDTOList(printers);
         printerTableView.getItems().setAll(printerDTOList);
 
-        // °ó¶¨´òÓ¡»úÏÂÀ­¿òÊı¾İ
+        // ç»‘å®šæ‰“å°æœºä¸‹æ‹‰æ¡†æ•°æ®
         List<String> printStrList = printerDTOList.stream().map(PrinterDTO::getPrinterName).collect(Collectors.toList());
         defaultPrinterChoiceBox.getItems().setAll(printStrList);
         labelPrinterChoiceBox.getItems().setAll(printStrList);
@@ -167,35 +170,35 @@ public class MainController implements Initializable {
     }
 
     private void initChoiceBoxValue(Map<String, String> map, List<String> printStrList) {
-        // Ä¬ÈÏ´òÓ¡»úÏÂÀ­¿ò³õÊ¼Öµ
+        // é»˜è®¤æ‰“å°æœºä¸‹æ‹‰æ¡†åˆå§‹å€¼
         String defaultValue = map.get(Contants.DEFAULT_PRINTER);
         if (!StringUtils.isEmpty(defaultValue) && printStrList.contains(defaultValue)) {
             defaultPrinterChoiceBox.setValue(defaultValue);
         } else {
             CommonDao.deleteSysConfig(Contants.DEFAULT_PRINTER);
         }
-        // ±êÇ©´òÓ¡»úÏÂÀ­¿ò³õÊ¼Öµ
+        // æ ‡ç­¾æ‰“å°æœºä¸‹æ‹‰æ¡†åˆå§‹å€¼
         String labelValue = map.get(Contants.LABEL_PRINTER);
         if (!StringUtils.isEmpty(labelValue) && printStrList.contains(labelValue)) {
             labelPrinterChoiceBox.setValue(labelValue);
         } else {
             CommonDao.deleteSysConfig(Contants.LABEL_PRINTER);
         }
-        // ÎïÁ÷Ãæµ¥´òÓ¡»úÏÂÀ­¿ò³õÊ¼Öµ
+        // ç‰©æµé¢å•æ‰“å°æœºä¸‹æ‹‰æ¡†åˆå§‹å€¼
         String logisticsValue = map.get(Contants.LOGISTICS_PRINTER);
         if (!StringUtils.isEmpty(logisticsValue) && printStrList.contains(logisticsValue)) {
             logisticsPrinterChoiceBox.setValue(logisticsValue);
         } else {
             CommonDao.deleteSysConfig(Contants.LOGISTICS_PRINTER);
         }
-        // ×°ÏäÇåµ¥´òÓ¡»úÏÂÀ­¿ò³õÊ¼Öµ
+        // è£…ç®±æ¸…å•æ‰“å°æœºä¸‹æ‹‰æ¡†åˆå§‹å€¼
         String packValue = map.get(Contants.PACK_PRINTER);
         if (!StringUtils.isEmpty(packValue) && printStrList.contains(packValue)) {
             packPrinterChoiceBox.setValue(packValue);
         } else {
             CommonDao.deleteSysConfig(Contants.PACK_PRINTER);
         }
-        // A4´òÓ¡»úÏÂÀ­¿ò³õÊ¼Öµ
+        // A4æ‰“å°æœºä¸‹æ‹‰æ¡†åˆå§‹å€¼
         String a4Value = map.get(Contants.A4_PRINTER);
         if (!StringUtils.isEmpty(a4Value) && printStrList.contains(a4Value)) {
             a4PrinterChoiceBox.setValue(a4Value);
@@ -205,19 +208,19 @@ public class MainController implements Initializable {
     }
 
     /**
-     * Çå¿ÕÈÕÖ¾
+     * æ¸…ç©ºæ—¥å¿—
      */
     public void clearLog(ActionEvent event) {
         Platform.runLater(() -> logArea.setText(""));
     }
 
     /**
-     * ÖØ´òÉÏÒ»´ÎÇëÇóµÄµ¥¾İ
+     * é‡æ‰“ä¸Šä¸€æ¬¡è¯·æ±‚çš„å•æ®
      */
     public void rePrint(ActionEvent event) {
         RequestModel lastReq = CommonDao.getLastPrintLog();
         if (lastReq == null) {
-            String msg = "Ã»ÓĞ²éÑ¯µ½ÉÏ´ÎµÄ´òÓ¡¼ÇÂ¼!";
+            String msg = "æ²¡æœ‰æŸ¥è¯¢åˆ°ä¸Šæ¬¡çš„æ‰“å°è®°å½•!";
             log.error(msg);
             Platform.runLater(() -> AlertUtil.error(msg));
             return;
@@ -225,7 +228,7 @@ public class MainController implements Initializable {
         try {
             ServerHandler.printByUrl(lastReq);
         } catch (Exception e) {
-            log.error("´òÓ¡Ê§°Ü!", e);
+            log.error("æ‰“å°å¤±è´¥!", e);
         }
     }
 

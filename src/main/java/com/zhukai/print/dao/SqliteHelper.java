@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * sqlite°ïÖúÀà£¬Ö±½Ó´´½¨¸ÃÀàÊµÀı£¬²¢µ÷ÓÃÏàÓ¦µÄ½Ó¿Ú¼´¿É¶ÔsqliteÊı¾İ¿â½øĞĞ²Ù×÷
+ * sqliteå¸®åŠ©ç±»ï¼Œç›´æ¥åˆ›å»ºè¯¥ç±»å®ä¾‹ï¼Œå¹¶è°ƒç”¨ç›¸åº”çš„æ¥å£å³å¯å¯¹sqliteæ•°æ®åº“è¿›è¡Œæ“ä½œ
  */
 @Slf4j
 public class SqliteHelper {
@@ -15,10 +15,10 @@ public class SqliteHelper {
     private Connection connection;
     private Statement statement;
     private ResultSet resultSet;
-    private String dbFilePath;
+    private final String dbFilePath;
 
     /**
-     * ¹¹Ôìº¯Êı
+     * æ„é€ å‡½æ•°
      *
      * @throws ClassNotFoundException
      * @throws SQLException
@@ -28,9 +28,9 @@ public class SqliteHelper {
     }
 
     /**
-     * ¹¹Ôìº¯Êı
+     * æ„é€ å‡½æ•°
      *
-     * @param dbFilePath sqlite db ÎÄ¼şÂ·¾¶
+     * @param dbFilePath sqlite db æ–‡ä»¶è·¯å¾„
      * @throws ClassNotFoundException
      * @throws SQLException
      */
@@ -40,10 +40,10 @@ public class SqliteHelper {
     }
 
     /**
-     * »ñÈ¡Êı¾İ¿âÁ¬½Ó
+     * è·å–æ•°æ®åº“è¿æ¥
      *
-     * @param dbFilePath dbÎÄ¼şÂ·¾¶
-     * @return Êı¾İ¿âÁ¬½Ó
+     * @param dbFilePath dbæ–‡ä»¶è·¯å¾„
+     * @return æ•°æ®åº“è¿æ¥
      * @throws ClassNotFoundException
      * @throws SQLException
      */
@@ -59,11 +59,11 @@ public class SqliteHelper {
     }
 
     /**
-     * Ö´ĞĞsql²éÑ¯
+     * æ‰§è¡ŒsqlæŸ¥è¯¢
      *
-     * @param sql sql select Óï¾ä
-     * @param rse ½á¹û¼¯´¦ÀíÀà¶ÔÏó
-     * @return ²éÑ¯½á¹û
+     * @param sql sql select è¯­å¥
+     * @param rse ç»“æœé›†å¤„ç†ç±»å¯¹è±¡
+     * @return æŸ¥è¯¢ç»“æœ
      * @throws SQLException
      * @throws ClassNotFoundException
      */
@@ -80,10 +80,10 @@ public class SqliteHelper {
     }
 
     /**
-     * Ö´ĞĞselect²éÑ¯£¬·µ»Ø½á¹ûÁĞ±í
+     * æ‰§è¡ŒselectæŸ¥è¯¢ï¼Œè¿”å›ç»“æœåˆ—è¡¨
      *
-     * @param sql sql select Óï¾ä
-     * @param rm  ½á¹û¼¯µÄĞĞÊı¾İ´¦ÀíÀà¶ÔÏó
+     * @param sql sql select è¯­å¥
+     * @param rm  ç»“æœé›†çš„è¡Œæ•°æ®å¤„ç†ç±»å¯¹è±¡
      * @return
      * @throws SQLException
      * @throws ClassNotFoundException
@@ -104,10 +104,10 @@ public class SqliteHelper {
     }
 
     /**
-     * Ö´ĞĞÊı¾İ¿â¸üĞÂsqlÓï¾ä
+     * æ‰§è¡Œæ•°æ®åº“æ›´æ–°sqlè¯­å¥
      *
      * @param sql
-     * @return ¸üĞÂĞĞÊı
+     * @return æ›´æ–°è¡Œæ•°
      * @throws SQLException
      * @throws ClassNotFoundException
      */
@@ -124,7 +124,7 @@ public class SqliteHelper {
     }
 
     /**
-     * Ö´ĞĞ¶à¸ösql¸üĞÂÓï¾ä
+     * æ‰§è¡Œå¤šä¸ªsqlæ›´æ–°è¯­å¥
      *
      * @param sqls
      * @throws SQLException
@@ -145,9 +145,9 @@ public class SqliteHelper {
     }
 
     /**
-     * Ö´ĞĞÊı¾İ¿â¸üĞÂ sql List
+     * æ‰§è¡Œæ•°æ®åº“æ›´æ–° sql List
      *
-     * @param sqls sqlÁĞ±í
+     * @param sqls sqlåˆ—è¡¨
      * @throws SQLException
      * @throws ClassNotFoundException
      */
@@ -184,7 +184,7 @@ public class SqliteHelper {
     }
 
     /**
-     * Êı¾İ¿â×ÊÔ´¹Ø±ÕºÍÊÍ·Å
+     * æ•°æ®åº“èµ„æºå…³é—­å’Œé‡Šæ”¾
      */
     public void destroyed() {
         try {
@@ -203,7 +203,7 @@ public class SqliteHelper {
                 resultSet = null;
             }
         } catch (SQLException e) {
-            log.error("SqliteÊı¾İ¿â¹Ø±ÕÊ±Òì³£", e);
+            log.error("Sqliteæ•°æ®åº“å…³é—­æ—¶å¼‚å¸¸", e);
         }
     }
 }
